@@ -6,8 +6,13 @@ import sys
 import time
 import math
 import numpy as np
+import logging
+
+logging.basicConfig()
+logger = logging.getLogger("robotbase")
+
 ser = serial.Serial(
-    port='/dev/ttyS0',
+    port='/dev/ttyUSB0',
     baudrate=115200,
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_ONE,
@@ -18,9 +23,9 @@ ser = serial.Serial(
 def serialWriteNumToByte(token, var=[]): # Only to be used for c m u b i l o within Python
     #print("Num Token "); print(token);print(" var ");print(var);print("\n\n");
     if token =='c' or token =='m' or token =='u' or token =='b':
-        instrStr = token + ":" + str(var[0])+" "+str(var[1])+'\n'
-    print "!!!!"+ instrStr
-    ser.write(instrStr)
+        instrStr = token + ":" + str(var[0])+","+str(var[1])+'\n'
+    logger.info("robot command send: "+ instrStr)
+    ser.write(instrStr.encode())
 
 if __name__ == '__main__':
     while 1:

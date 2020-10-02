@@ -2,6 +2,7 @@ import aipi.chatbot
 import aipi.asr
 import aipi.tts
 import eyepi.eyespi
+import esppi.robotbase
 
 import logging
 from multiprocessing import Value, Process, Manager, Queue
@@ -67,21 +68,35 @@ def voice_process(response):
         print("chatbot output:"+output)
         tts.speak(output)
 
+def robotbase_process(robot_base_cmd):
+    signal.signal(signal.SIGINT, signal_handler)
+
+    while 1:
+        esppi.robotbase.serialWriteNumToByte('m',[10000,0])
+        time.sleep(0.1)
+        esppi.robotbase.serialWriteNumToByte('m',[0,0])
+        time.sleep(1)
+        
+
 def process_manager():
     
-    in_text = Queue()
-    response = Queue()
+    voice_response = Queue()
+    robotbase_cmd = Queue()
 
     voice_processor = Process(target=voice_process,
-                                args=(response,))
+                                args=(voice_response,))
     eye_processor = Process(target=eye_process,
                                 args=())
+    robotbase_processor = Process(target=robotbase_process,
+                                args=(robotbase_cmd,))
 
     #voice_processor.start()
-    eye_processor.start()
+    # eye_processor.start()
+    robotbase_processor.start()
 
-    #voice_processor.join()
-    eye_processor.join()
+    # voice_processor.join()
+    # eye_processor.join()
+    robotbase_processor.join()
 
 
 if __name__ == "__main__":
