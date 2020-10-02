@@ -76,16 +76,22 @@ def robotbase_process(robot_base_cmd):
     signal.signal(signal.SIGINT, signal_handler)
 
     while 1:
-        esppi.robotbase.serialWriteNumToByte('m',[10000,0])
-        time.sleep(0.1)
+        cmd = robot_base_cmd.get()
+        esppi.robotbase.serialWriteNumToByte(cmd["token"],cmd["vel"])
+        time.sleep(cmd["duration"])
         esppi.robotbase.serialWriteNumToByte('m',[0,0])
-        time.sleep(1)
         
 
 def process_manager():
     
     voice_response = Queue()
     robotbase_cmd = Queue()
+
+    motor_cmd = dict()
+    motor_cmd["token"] = 'm'
+    motor_cmd["vel"] = [1000,0]
+    motor_cmd["duration"] = 0.1
+    robotbase_cmd.put(motor_cmd)
 
     voice_processor = Process(target=voice_process,
                                 args=(voice_response,))
