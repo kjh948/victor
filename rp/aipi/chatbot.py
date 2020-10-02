@@ -8,8 +8,6 @@ from chatterbot.response_selection import get_random_response
 
 from chatterbot.trainers import ChatterBotCorpusTrainer
 
-# Enable info level logging
-logging.basicConfig(level=logging.INFO)
 
 class r2d2Bot(object):
 

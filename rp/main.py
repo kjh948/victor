@@ -11,6 +11,10 @@ from ctypes import c_char_p
 import signal
 import sys
 
+# Enable info level logging
+logging.basicConfig(level=logging.INFO)
+
+
 def signal_handler(sig, frame):
     # print a status message
     print("[INFO] You pressed `ctrl + c`! Exiting...")
