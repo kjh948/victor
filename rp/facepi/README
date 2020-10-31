@@ -1,0 +1,3 @@
+To run over ssh, set the following env variable:
+   export DISPLAY=:0.0
+

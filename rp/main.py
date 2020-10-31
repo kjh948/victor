@@ -101,12 +101,12 @@ def process_manager():
                                 args=(robotbase_cmd,))
 
     #voice_processor.start()
-    # eye_processor.start()
-    robotbase_processor.start()
+    eye_processor.start()
+    #robotbase_processor.start()
 
     # voice_processor.join()
-    # eye_processor.join()
-    robotbase_processor.join()
+    eye_processor.join()
+    #robotbase_processor.join()
 
 
 if __name__ == "__main__":

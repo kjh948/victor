@@ -10,15 +10,18 @@ import logging
 
 logger = logging.getLogger("robotbase")
 
-ser = serial.Serial(
-    port='/dev/ttyUSB0',
-    baudrate=115200,
-    parity=serial.PARITY_NONE,
-    stopbits=serial.STOPBITS_ONE,
-    bytesize=serial.EIGHTBITS,
-    timeout=1
-)
-
+try:
+    ser = serial.Serial(
+        port='/dev/ttyUSB0',
+        baudrate=115200,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+    )
+except:
+    pass
+    
 def serialWriteNumToByte(token, var=[]): # Only to be used for c m u b i l o within Python
     #print("Num Token "); print(token);print(" var ");print(var);print("\n\n");
     if token =='c' or token =='m' or token =='u' or token =='b':
