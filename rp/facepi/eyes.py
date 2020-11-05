@@ -184,7 +184,7 @@ animate()
 root.configure(bg='black')
 root.overrideredirect(True)
 #root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
-root.geometry("800x600+0+0")
+root.geometry("720x480+0+0")
 root.focus_set()  # <-- move focus to this widget
 
 #Bind escape button

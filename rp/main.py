@@ -29,7 +29,7 @@ def eye_process():
 def tts_process(response):
     signal.signal(signal.SIGINT, signal_handler)
 
-    tts = aipi.tts.r2d2Tts(engine='polly')
+    tts = aipi.tts.r2d2Tts(engine='espeak')
     
     while 1:
         tts.speak(response.get())
@@ -53,13 +53,13 @@ def chatbot_process(in_text, response):
 def voice_process(response):
     signal.signal(signal.SIGINT, signal_handler)
 
-    tts = aipi.tts.r2d2Tts(engine='polly')
+    tts = aipi.tts.r2d2Tts(engine='espeak')
     tts.speak("준비 시작")
 
     chatbot = aipi.chatbot.r2d2Bot(dbpath='db.sqlite3',read_only=True)
     #chatbot = aipi.chatbot.r2d2Bot(corpus='aipi/data/corpus/chichat.json', dbpath='db.sqlite3',read_only=False)
     #chatbot = aipi.chatbot.r2d2Bot(corpus='aipi/data/corpus/kibots_corpus.json', dbpath='db.sqlite3',read_only=False)
-    asr = aipi.asr.r2d2Asr(ambient=True)
+    asr = aipi.asr.r2d2Asr(ambient=False)
     
     chatbot.get_response("안녕하세요")
     tts.speak("준비 완료")
@@ -100,12 +100,12 @@ def process_manager():
     robotbase_processor = Process(target=robotbase_process,
                                 args=(robotbase_cmd,))
 
-    #voice_processor.start()
-    eye_processor.start()
+    voice_processor.start()
+    #eye_processor.start()
     #robotbase_processor.start()
 
-    # voice_processor.join()
-    eye_processor.join()
+    voice_processor.join()
+    #eye_processor.join()
     #robotbase_processor.join()
 
 
