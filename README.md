@@ -8,4 +8,6 @@ sudo apt-get install sox libsox-fmt-mp3
 mjpeg server
 https://www.instructables.com/IoT-Raspberry-Pi-Video-Streamer-and-PanTilt-Camera/
 
-
+opencv
+https://github.com/dltpdn/opencv-for-rpi/releases --> errornous
+https://github.com/dlime/Faster_OpenCV_4_Raspberry_Pi

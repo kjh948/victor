@@ -13,6 +13,10 @@ import serial 		# for Arduino serial access
 import serial.tools.list_ports
 import subprocess 	# for shell commands
 
+import sys
+sys.path.insert(0,'..')
+import esppi.robotbase
+
 app = Flask(__name__)
 
 
@@ -243,7 +247,8 @@ def login():
 	if session.get('active') == True:
 		return redirect(url_for('index'))
 	else:
-		return render_template('login.html')
+		session['active'] = True
+		return redirect(url_for('index'))
 
 # Login Request
 @app.route('/login_request', methods = ['POST'])
@@ -263,14 +268,20 @@ def motor():
 	stickX =  request.form.get('stickX')
 	stickY =  request.form.get('stickY')
 	if stickX is not None and stickY is not None:
-		xVal = int(float(stickX)*100)
-		yVal = int(float(stickY)*100)
+		xVal = int(float(stickX)*10000)
+		yVal = int(float(stickY)*1000)
 		print("Motors:", xVal, ",", yVal)
 		if test_arduino() == 1:
-			queueLock.acquire()
-			workQueue.put("X" + str(xVal))
-			workQueue.put("Y" + str(yVal))
-			queueLock.release()
+			# queueLock.acquire()
+			# lvel = -yVal
+			# avel = xVal
+			# instrStr = "m:" + str(lvel)+","+str(avel)+","+'\n'
+			# workQueue.put(instrStr)
+			# queueLock.release()
+
+			esppi.robotbase.serialWriteNumToByte('m',[-yVal,xVal])
+
+			
 			return jsonify({'status': 'OK' })
 		else:
 			return jsonify({'status': 'Error','msg':'Arduino not connected'})
