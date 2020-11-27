@@ -11,6 +11,17 @@ from socketserver import ThreadingMixIn
 import time
 import sys
 
+import argparse
+#import platform
+import numpy as np
+#from PIL import Image
+from time import sleep
+import multiprocessing as mp
+try:
+    from tflite_runtime.interpreter import Interpreter
+except:
+    import tensorflow as tf
+
 
 class CamHandler(BaseHTTPRequestHandler):
     
