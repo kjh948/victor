@@ -11,6 +11,7 @@ try:
 except:
     import tensorflow as tf
 
+from dnn_opencv import ObjectDetectionOpenCV
 
 lastresults = None
 processes = []
@@ -178,6 +179,22 @@ def inferencer(results, frameBuffer, model, camera_width, camera_height, process
         ans = detector.detect(prepimg, 0.4)
         results.put(ans)
 
+def inferencer2(results, frameBuffer, model, camera_width, camera_height, process_num, threads_num):
+
+    detector = ObjectDetectionOpenCV()
+    print("Loaded Graphs!!!", process_num)
+
+    while True:
+
+        if frameBuffer.empty():
+            continue
+
+        # Run inference.
+        color_image = frameBuffer.get()
+        prepimg = color_image[:, :, ::-1].copy()
+        ans = detector.detect(prepimg, 0.4)
+        results.put(ans)
+
 
 
 def overlay_on_image(frames, object_infos, camera_width, camera_height):
@@ -245,7 +262,7 @@ if __name__ == '__main__':
 
         # Activation of inferencer
         for process_num in range(core_num):
-            p = mp.Process(target=inferencer,
+            p = mp.Process(target=inferencer2,
                            args=(results, frameBuffer, model, camera_width, camera_height, process_num, threads_num),
                            daemon=True)
             p.start()
