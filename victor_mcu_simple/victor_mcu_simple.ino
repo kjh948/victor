@@ -1,10 +1,10 @@
 #include <ESP8266WiFi.h>
-#include <PID_v1.h>
+
 
 #define DEBUG 1
 
 #include "printf.h"
-#include "led.h"
+//#include "led.h"
 #include "motor.h"
 
 
@@ -12,8 +12,10 @@
 void setup() {
   Serial.begin(115200);
 
+  printf("init start");
+
   initMotor();
-  initLED();
+  //initLED();
   
 #if 0
   motion(-1000,1000);
@@ -42,6 +44,9 @@ int lvel,avel;
 
 void loop() {
 
+  motion(-1000,1000);
+  return;
+  
   static unsigned long prev_sensor_time = 0;
   static unsigned long prev_command_time = 0;
   static unsigned long prev_led_time = 0;
@@ -80,7 +85,7 @@ void loop() {
 
   if ((millis() - prev_led_time) >= (1000 / LED_RATE))
   { 
-    setLED(0);
+    //setLED(0);
     //if (ledCmd > 0)
     {
       //showLed(prev_led_time % 256, (255 - prev_led_time % 256));
